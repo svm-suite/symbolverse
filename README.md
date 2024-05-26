@@ -57,7 +57,7 @@
 
 Following the principles of [service oriented programming](https://en.wikipedia.org/wiki/Service-oriented_programming) (SOP), *Symbolverse* inherits some positive properties from the SOP paradigm. One of those properties is increased code encapsulation which implies a high agility during the programming process. Other positive properties include high level of modularity needed for code reuse, and granular independence between services. The SOP paradigm clearly differentiates between distinct services dedicated to perform given tasks. Such services communicate between each other only by passing messages. Internal processing of messages utilizes a particular *Symbolverse* model of computation.
 
-The model of computation in *Symbolverse* represents an integration of two computing assets: running processes and applying rules. Running processes and applying rules reside on two very distant sides of the known computing spectrum. In *Symbolverse*, while processes can't return values, rules can't run processes. Complementary relation between them is meant to bridge the wide gap between [imperative](https://en.wikipedia.org/wiki/Imperative_programming) (dealing with processes) and [declarative](https://en.wikipedia.org/wiki/Declarative_programming) (dealing with rules) programming paradigms. Different coding purposes may require different approaches to the problems, and in *Symbolverse*, we are able to combine the low level imperative with the high level declarative solutions. Message exchange system interwoven into the *Symbolverse* allows us to define any intermediate domain specific solution by integrating components of the two initially contrasting sides.
+The model of computation in *Symbolverse* represents an integration of two computing assets: running processes and applying rules. Running processes and applying rules reside on two very distant sides of the known computing spectrum. In *Symbolverse*, while processes can't return values, rules can't run processes. Complementary relation between them is meant to bridge the wide gap between [imperative](https://en.wikipedia.org/wiki/Imperative_programming) (dealing with processes) and [declarative](https://en.wikipedia.org/wiki/Declarative_programming) (dealing with rules) programming paradigms. Different coding purposes may require different approaches to the problems, and in *Symbolverse*, we are able to combine the imperative with the declarative solutions. Message exchange system interwoven into the *Symbolverse* allows us to define any intermediate domain specific solution by integrating components of the two initially contrasting sides.
 
 During the *Symbolverse* creation, guiding thought was aspiration for definitional simplicity since symbolic artificial intelligence, programming which is the main purpose of *Symbolverse*, has to be able to create the *Symbolverse* code. Simplicity for handling code led us to simplicity for understanding code, which in turn led us to simplicity for implementing *Symbolverse*. Many aspects of programming constructs (like typing system) are intentionally left out of the *Symbolverse* core definition. Nevertheless, the algorithmic completeness of *Symbolverse* provides us with resources to build up any programming constructs we require on top of the *Symbolverse* core.
 
@@ -535,14 +535,17 @@ By the definition, *rulesets* borrow *sequents* from sequent calculus, and exten
 [Syntax](https://en.wikipedia.org/wiki/Syntax) of a computer language is the set of rules that defines the combinations of symbols that are considered to be correctly structured statements or expressions in that language. *rulesets* language itself resembles a kind of s-expression. S-expressions consist of lists of atoms or other s-expressions where lists are surrounded by parenthesis. In *rulesets*, the first list element to the left determines a type of a list. There are a few predefined list types used for data transformation, depicted by the following relaxed kind of [Backus-Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) rules:
 
 ```
-   <ruleset> := (RULESET <expression>)
+   <ruleset> := (RULESET <expression>+)
 
-<expression> := (EXP <S-EXPR>)
-              | (RULE (READ <expression>+) (CHAIN <expression>+)? (WRITE <expression>+))
-              | (MATCH (VAR <ATOM>+) <expression>)
+<expression> := <binding>
+              | <rule>
+
+   <binding> := (MATCH (VAR <ATOM>+) <rule>)
+   
+      <rule> := (RULE (READ (EXP <S-EXPR>)+) (WRITE (EXP <S-EXPR>)+))
 ```
 
-The above grammar rules define the syntax of *rulesets*. To interpret these grammar rules, we use special symbols: `<...>` for noting identifiers, `... := ...` for expressing assignment, `...+` for one or more occurrences, `...?` for optional appearance, and `... | ...` for alternation between expressions. All other symbols are considered as parts of the *rulesets* language.
+The above grammar rules define the syntax of *rulesets*. To interpret these grammar rules, we use special symbols: `<...>` for noting identifiers, `... := ...` for expressing assignment, `...+` for one or more occurrences, and `... | ...` for alternation between expressions. All other symbols are considered as parts of the *rulesets* language.
 
 In addition to the above grammar, user comments have no meaning to the system, but may be descriptive to readers, and may be placed wherever a whitespace is expected. Single line comments begin with `//`, and reach to the end of line. Multiline comments begin with `/*` and end with `*/`, so that everything in between is considered as a comment.
 
